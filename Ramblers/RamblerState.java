@@ -11,6 +11,7 @@ public class RamblerState extends SearchState {
 	static int rows;
 	static int columns;	
 	static int matrix[][];
+	static RamblerState goal;
 	
 	
 	// constructor for ramblers state
@@ -26,13 +27,25 @@ public class RamblerState extends SearchState {
 			{
 				matrix[i][j] = mat[i][j];
 			}
-		}
-		
+		}	
 		
 	}
 	
+	public static void setGoalState(RamblerState goalState)
+	{
+		goal = goalState;
+	}
 	// constructor with all parameters.
 
+	public RamblerState(int mat[][],int rows,int columns,int posX,int posY,RamblerState goal) {
+		// TODO Auto-generated constructor stub
+		setRamblerMatrix(rows,columns,mat);
+		setGoalState(goal);
+        this.posX = posX;
+        this.posY = posY;
+  
+	}
+	
 	public RamblerState(int mat[][],int rows,int columns,int posX,int posY) {
 		// TODO Auto-generated constructor stub
 		setRamblerMatrix(rows,columns,mat);
@@ -40,6 +53,7 @@ public class RamblerState extends SearchState {
         this.posY = posY;
   
 	}
+	
 	
 	// constructor with position on the grid
 	
@@ -81,6 +95,20 @@ public class RamblerState extends SearchState {
 		return posX==s.getX() && posY==s.getY();
 	}
 
+	int heightHeuristic()
+	{
+		return Math.abs(this.getHeight() - goal.getHeight());
+	}
+	
+	int euclidianDistanceHeuristic()
+	{
+		return (int)Math.sqrt((this.getPosX()-goal.getPosX())*(this.getPosX()-goal.getPosX()) + (this.getPosY()-goal.getPosY())*(this.getPosX()-goal.getPosX()) + (this.getPosX()-goal.getHeight())*(this.getPosX()-goal.getHeight()));
+	}
+	
+	int manhattanDistanceHeuristic()
+	{
+		return Math.abs(this.getPosX()-goal.getPosX()) + Math.abs(this.getPosY()-goal.getPosY());
+	}
 
 	@Override
 	ArrayList<SearchState> getSuccessors(Search searcher) {
@@ -92,12 +120,15 @@ public class RamblerState extends SearchState {
 		if(s!=null)
 		{
 			s.localCost = this.cost((RamblerState)s);
+			s.estRemCost = this.euclidianDistanceHeuristic();
+			
 			sol.add(s);
 		}
 		s = this.moveUp();
 		if(s!=null)
 		{
 			s.localCost = this.cost((RamblerState) s);
+			s.estRemCost = this.euclidianDistanceHeuristic();
 			sol.add(s);
 		}
 		s = this.moveRight();
@@ -105,6 +136,7 @@ public class RamblerState extends SearchState {
 		if(s!=null)
 		{
 			s.localCost = this.cost((RamblerState) s);
+			s.estRemCost = this.euclidianDistanceHeuristic();
 			sol.add(s);
 		}
 		
@@ -112,6 +144,7 @@ public class RamblerState extends SearchState {
 		if(s!=null)
 		{
 			s.localCost = this.cost((RamblerState) s);
+			s.estRemCost = this.euclidianDistanceHeuristic();
 			sol.add(s);
 		}
 		

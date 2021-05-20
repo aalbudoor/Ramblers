@@ -26,6 +26,7 @@ public abstract class Search {
   public  String runSearch (SearchState initState, String strat) {
 
     initNode = new SearchNode(initState,0,0); // create initial node
+    initNode.setParent(null);
     initNode.setGlobalCost(0); //change from search2
 
 	  //change from search1 - print strategy
@@ -246,7 +247,7 @@ public abstract class Search {
 	    int plen=1;
 
 	    while (n.getParent() != null){
-	      buf.insert(0,"\n");
+	      buf.insert(0,"\n\n");
 	      n=n.getParent();
 	      buf.insert(0,n.toString());
 	      plen=plen+1;
@@ -256,6 +257,7 @@ public abstract class Search {
 	    System.out.println("Search Succeeds");
 
     	System.out.println("Efficiency "+ ((float) plen/(closed.size()+1)));
+    	System.out.println("Plen: "+plen);
 	    System.out.println("Solution Path\n");
 	    return buf.toString();
     }

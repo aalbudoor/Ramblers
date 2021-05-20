@@ -7,7 +7,7 @@ public class RamblersSearch extends Search {
 	
 	public RamblersSearch()
 	{
-		TerrainMap tmap = new TerrainMap("/Users/aalbudoor/Downloads/Ramblers/tmc.pgm");
+		TerrainMap tmap = new TerrainMap("/Users/aalbudoor/git/Ramblers/Ramblers/tmc.pgm");
 		init = new RamblerState(tmap.getTmap(),tmap.getWidth(),tmap.getDepth(),0,0);
 		goal = new RamblerState(tmap.getTmap(),tmap.getWidth(),tmap.getDepth(),tmap.getWidth()-1,tmap.getDepth()-1);
 		initNode = new SearchNode(init,0,0);
